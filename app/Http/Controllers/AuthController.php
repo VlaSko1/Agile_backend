@@ -52,7 +52,7 @@ class AuthController extends Controller
         $user->birthday = $birthday; 
         $user->password = Hash::make($password);
         $user->save();
-
+        
         return response()->json(['message' => 'Successfully registration!']);
     }
 
