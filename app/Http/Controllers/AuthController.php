@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
@@ -37,13 +38,13 @@ class AuthController extends Controller
     /**
      * User registration
      */
-    public function registration()
+    public function registration(AuthRequest $request)
     {
-        $name = request('name');
-        $login = request('login');
-        $email = request('email');
-        $birthday = request('birthday');
-        $password = request('password');
+        $name = $request->input('name');
+        $login = $request->input('login');
+        $email = $request->input('email');
+        $birthday = $request->input('birthday');
+        $password = $request->input('password');
 
         $user = new User();
         $user->name = $name;

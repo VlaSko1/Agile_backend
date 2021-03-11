@@ -1,0 +1,29 @@
+[33mcommit ba865d2530fabbcd1443b20195d2e2ff2ae1b9e8[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31mheroku/master[m[33m)[m
+Author: Vladimir <Vizion84@yandex.ru>
+Date:   Fri Mar 5 22:27:06 2021 +0300
+
+    Add validation registration, response user data
+
+[33mcommit 69eda570c95a45f7231298eba9828f91e567b16a[m
+Author: Vladimir <Vizion84@yandex.ru>
+Date:   Wed Mar 3 20:51:00 2021 +0300
+
+    Add secret
+
+[33mcommit 4a450459c0a220fdb71c2ea058deb94c4cd2a7c2[m
+Author: Vladimir <Vizion84@yandex.ru>
+Date:   Wed Mar 3 19:10:59 2021 +0300
+
+    Add CORS and middleware-auth:api
+
+[33mcommit c7d0182289905c4a2e321ac4d06fa8cfca2c38e7[m
+Author: Vladimir <Vizion84@yandex.ru>
+Date:   Mon Mar 1 23:34:15 2021 +0300
+
+    settings bd
+
+[33mcommit a07589324d2194a925d2397dc607e4b9c69294d1[m
+Author: Vladimir <Vizion84@yandex.ru>
+Date:   Mon Mar 1 22:42:31 2021 +0300
+
+    first commit

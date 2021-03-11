@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,9 +16,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::group([
     'prefix' => 'auth'
@@ -28,8 +27,23 @@ Route::group([
     Route::post('me', [ AuthController::class, 'me']);
     Route::post('logout', [ AuthController::class, 'logout']);
     Route::post('refresh', [AuthController:: class, 'refresh']);
+    
+
 });
+
+
+Route::resources(['blog' => BlogController::class]);
+
+/*Route::group([
+    'prefix' => 'blog'
+        ], function () {
+
+        Route::resource('blog')
+        Route::post('add', [BlogController::class, 'store']);
+
+    });*/
 
 /*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
+
