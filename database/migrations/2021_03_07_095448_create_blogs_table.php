@@ -20,6 +20,7 @@ class CreateBlogsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title', 255);
             $table->text('text');
+            $table->mediumText('blog_img')->nullable(true);
             $table->foreignId('user_id')->references('id')->on('users');
             $table->boolean('public')->default(false);
             $table->timestamps();

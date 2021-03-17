@@ -27,6 +27,7 @@ class AddBlogRequest extends FormRequest
             'title' => ['required', 'min:3', 'max:255'],
             'text' => ['required', 'min:3', 'max:65535'],
             'public' => ['boolean'],
+            'blog_img' => ['max:16777215']
         ];
     }
 }

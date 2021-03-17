@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Blog\AddBlogRequest;
 use App\Http\Controller\AuthController;
 
+
 class BlogController extends Controller
 {
     /**
@@ -18,14 +19,21 @@ class BlogController extends Controller
      */
     public function index()
     {
+        // Проверка аунтентификации
         if (empty(auth()->user())) {
-            return response()->json(['message' =>"Take token please..."]);
+            return response()->json(['message' =>"You are not logged in"], 401);
         }
         
         $user_id = $this->getUserId();
         $blog = Blog::get()->where('user_id', $user_id);
         
-        return response()->json($blog);
+        // Преобразование объекта с объектами в массив
+        $arrBlog = [];
+        foreach ($blog as $item) {
+            $arrBlog[] = $item;
+        }
+
+        return response()->json($arrBlog);
     }
 
     /**
@@ -46,17 +54,20 @@ class BlogController extends Controller
      */
     public function store(AddBlogRequest $request)
     {
-        
         $title = $request->input('title');
         $text = $request->input('text');
         $public = $request->input('public');
         $user_id = $this->getUserId();
+        //$blog_img = $this->getBlogImg('blog_img', $request);
+        $blog_img = $request->input('blog_img');
+
         if (is_null($user_id)) {
-            return response()->json(['message' => 'Please sing up']);
+            return response()->json(['message' => 'Please sing up'], 401);
         }
         $blog = new Blog();
         $blog->title = $title;
         $blog->text = $text; 
+        $blog->blog_img = $blog_img;            
         if (is_null($public)) {
             $public = '0';
         }
@@ -65,7 +76,7 @@ class BlogController extends Controller
         
         $blog->save();
         
-        return response()->json(['message' => 'Blog created and save']);
+        return response()->json($blog);
     }
 
     /**
@@ -80,7 +91,8 @@ class BlogController extends Controller
         if ($user_id == $blog->user_id) {
             return response()->json($blog);
         }
-        return response()->json(['message' => "You don't have such an article"]);
+        
+        return response()->json(['message' => "You don't have such an article"], 404);
     }
 
     /**
@@ -109,18 +121,19 @@ class BlogController extends Controller
         $user_id = $this->getUserId();
         $blog->title = $title;
         $blog->text = $text; 
-        if (is_null($public)) {
-            $public = '0';
-        }
-        $blog->public = $public; 
-        if ($blog->user_id !== $this->getUserId()) {
-            return response()->json(['message' => 'Invalid user ID']);
+        if (!is_null($public)) {
+            $blog->public = $public; 
         }
         
+        // Работа с изображением
+        //$blog_img = $this->getBlogImg('blog_img', $request);
+        $blog_img = $request->input('blog_img');
+        if(!is_null($blog_img)) {
+            $blog->blog_img = $blog_img;
+        }
         
         $blog->save();
-        
-        return response()->json(['message' => 'Blog update and save']);
+        return response()->json($blog);
     }
 
     /**
@@ -135,9 +148,10 @@ class BlogController extends Controller
         $blogIdUser = $blog->user_id;
         $userId = auth()->user();
         if ($blogIdUser !== $userId->id) {
-            return response()->json(['message' => "You don't have such an article"]);
+            return response()->json(['message' => "You don't have such an article"], 404);
         }
         if ($blog->delete()) {
+            
             return response()->json(["message" => "Article with id {$blogId} deleted"]);
         }
         
@@ -157,4 +171,33 @@ class BlogController extends Controller
         }
         return $user_id = $user->id;
     }
+
+
+    /**
+     * Return img to base64 for insert argument src and table
+     * 
+     * 
+     * @return null or string
+     * 
+     */
+    public function getBlogImg($string, $request)
+    {
+        if ($request->hasFile($string)) {
+            $file = $request->file($string);
+
+            //TODO кодируем файл в base64
+            $fp = fopen($file, 'rb', 0);
+                
+            $gambar = fread($fp, filesize($file));
+            $type = mime_content_type($fp);
+            fclose($fp);
+            $based64 = base64_encode($gambar);
+            $blog_img = 'data:' . $type . ';base64,' . $based64;
+            return $blog_img;
+            
+        } else {
+            return null;
+        }
+    }
+
 }
