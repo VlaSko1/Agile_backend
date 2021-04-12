@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Blog;
+namespace App\Http\Requests\Comment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddBlogRequest extends FormRequest
+class CommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class AddBlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'min:3', 'max:255'],
-            'text' => ['required', 'min:3', 'max:65535'],
-            'public' => ['boolean'],
-            'category_id' => ['required'],
-            'blog_img' => ['max:16777215']
+            'comment' => ['required', 'min:3', 'max:65535'],
+            'blog_id' => ['required']
         ];
     }
 }

@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogUpdateController;
+use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,23 +31,19 @@ Route::group([
     Route::post('me', [ AuthController::class, 'me']);
     Route::post('logout', [ AuthController::class, 'logout']);
     Route::post('refresh', [AuthController:: class, 'refresh']);
-    
-
 });
 
 
 Route::resources(['blog' => BlogController::class]);
 
-/*Route::group([
-    'prefix' => 'blog'
-        ], function () {
+Route::post('blog/{id}', [BlogUpdateController::class, 'updateBlog']);
 
-        Route::resource('blog')
-        Route::post('add', [BlogController::class, 'store']);
+Route::get('blogs', [BlogsController::class, 'show']);
 
-    });*/
+Route::get('blogs/category/{category_id}', [BlogsController::class, 'showPublicCategory']);
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+Route::get('blogs/{id}', [BlogsController::class, 'showPublicBlog']);
 
+Route::post('like/{idBlog}', [LikeController::class, 'clickLike']);
+
+Route::resources(['comment' => CommentController::class]);

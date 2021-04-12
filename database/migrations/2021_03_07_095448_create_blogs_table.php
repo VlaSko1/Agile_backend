@@ -22,6 +22,9 @@ class CreateBlogsTable extends Migration
             $table->text('text');
             $table->mediumText('blog_img')->nullable(true);
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->unsignedSmallInteger('category_id');
+            $table->unsignedMediumInteger('views')->default(0);
+            $table->foreign('category_id')->references('id')->on('blog_categories');
             $table->boolean('public')->default(false);
             $table->timestamps();
         });

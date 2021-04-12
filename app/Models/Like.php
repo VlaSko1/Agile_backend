@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Blog extends Model
+class Like extends Model
 {
     use HasFactory;
-    protected $table = 'blogs';
+    protected $table = 'likes';
+    
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'title',
-        'text',
         'user_id',
-        'category_id',
-        'blog_img',
-        'public',
-        'views'
+        'blog_id',
+        'isLike'
+        
     ];
 }

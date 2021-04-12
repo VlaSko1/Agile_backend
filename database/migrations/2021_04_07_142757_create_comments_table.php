@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,20 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        /*Schema::create('users', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->bigIncrements('id');
-            $table->string('name', 50);
-            $table->string('email')->unique();
-            $table->string('login', 50)->unique();
-            //$table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 255);
-            $table->date('birthday');
-            //$table->rememberToken();
+            $table->text('comment');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('blog_id');
             $table->timestamps();
-        });*/
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('blog_id')->references('id')->on('blogs');
+        });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -35,6 +34,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        //Schema::dropIfExists('users');
+        Schema::dropIfExists('comments');
     }
 }
