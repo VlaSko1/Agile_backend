@@ -19,7 +19,7 @@ class BlogUpdateController extends Controller
         $public = $request->input('public');
         $blog_img = $request->input('blog_img');
         $category_id = $request->input('category_id');
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
 
         if ($user_id !== $blog->user_id) {
             return response()->json(['message' => "You don't have an article with an id = {$id}"], 401);
@@ -43,22 +43,9 @@ class BlogUpdateController extends Controller
                                 ->select('blogs.*', 'blog_categories.category_name')
                                 ->where('blogs.id', $blog->id)
                                 ->get()->first();
+
+        modifiedDateTimeString($blog_join);                       
         return response()->json($blog_join);
         
-    }
-
-    /**
-     * Return user id for this Blog or Null.
-     *
-     * 
-     * @return id or null;
-     */
-    public function getUserId()
-    {
-        $user = auth()->user();
-        if (is_null($user)) {
-            return null;
-        }
-        return $user_id = $user->id;
     }
 }

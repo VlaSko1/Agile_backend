@@ -21,7 +21,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
         // Проверка аунтентификации
         if (is_null($user_id)) {
             return response()->json(['message' =>"You are not logged in"], 401);
@@ -62,7 +62,7 @@ class BlogController extends Controller
         $arrBlog = [];
         foreach ($blog as $item) {
             
-            $this->modifiedDateTimeString($item);
+            modifiedDateTimeString($item);
             $item->likes = 0;
             $item->userLike = false;
             for ($i = 0; $i < count($likes); $i++) {
@@ -106,7 +106,7 @@ class BlogController extends Controller
         $text = $request->input('text');
         $public = $request->input('public');
         $category_id = $request->input('category_id');
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
         $blog_img = $request->input('blog_img');
 
         if (is_null($user_id)) {
@@ -131,7 +131,7 @@ class BlogController extends Controller
                                 ->where('blogs.id', $blog->id)
                                 ->get()->first();
         
-        
+        modifiedDateTimeString($blog_join);
         return response()->json((object) $blog_join);
     }
 
@@ -143,7 +143,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
         if ($user_id == $blog->user_id) {
             \DB::table('blogs')
                     ->where('id', $blog->id)
@@ -169,8 +169,8 @@ class BlogController extends Controller
             $blog->likes = $likes[0]->count;
             $blog->userLike = (boolean) $userLike[0]->count;
 
-            $this->modifiedDateTime($blog);
-    
+            modifiedDateTime($blog);
+
             return response()->json($blog);
         }
         
@@ -221,50 +221,4 @@ class BlogController extends Controller
         
     }
 
-    /**
-     * Return user id for this Blog or Null.
-     *
-     * 
-     * @return user_id;
-     */
-    public function getUserId()
-    {
-        $user = auth()->user();
-        if (is_null($user)) {
-            return null;
-        }
-        return $user_id = $user->id;
-    }
-
-    /**
-     * Modify object->created_at and object->updated_at (in format DateTime): +3 hour
-     * 
-     * @param \App\Models\Blog  $blog
-     * @return \App\Models\Blog  $blog - modified
-     */
-
-    public function modifiedDateTime($item) {
-        $item->created_at = date_modify($item->created_at, '+3 hour');
-        $item->updated_at = date_modify($item->updated_at, '+3 hour');
-    }
-
-      /**
-     * Modify object->created_at and object->updated_at (in format string): +3 hour
-     * 
-     * @param \App\Models\Blog  $blog
-     * @return \App\Models\Blog  $blog - modified
-     */
-
-    public function modifiedDateTimeString($item) {
-        $created_at_date = new \DateTime($item->created_at);
-        $created_at_date->modify('+3 hour');
-        $created_at = $created_at_date->format('Y-m-d H:i:s');
-
-        $updated_at_date = new \DateTime($item->updated_at);
-        $updated_at_date->modify('+3 hour');
-        $updated_at = $updated_at_date->format('Y-m-d H:i:s');
-
-        $item->created_at = $created_at;
-        $item->updated_at = $updated_at;
-    }
 }

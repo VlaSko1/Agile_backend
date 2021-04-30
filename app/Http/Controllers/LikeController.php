@@ -12,7 +12,7 @@ class LikeController extends Controller
 
     public function clickLike($idBlog)
     {
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
 
         if (is_null($user_id)) {
             return response()->json(['message' => 'Please sing up'], 401);
@@ -36,20 +36,5 @@ class LikeController extends Controller
 
     }
 
-
-     /**
-     * Return user id for this Blog or Null.
-     *
-     * 
-     * @return id or null;
-     */
-    public function getUserId()
-    {
-        $user = auth()->user();
-        if (is_null($user)) {
-            return null;
-        }
-        return $user_id = $user->id;
-    }
 }
 

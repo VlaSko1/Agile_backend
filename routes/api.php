@@ -9,6 +9,7 @@ use App\Http\Controllers\BlogUpdateController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FindController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,6 +39,8 @@ Route::resources(['blog' => BlogController::class]);
 
 Route::post('blog/{id}', [BlogUpdateController::class, 'updateBlog']);
 
+Route::get('blogs_pagination/{page}', [BlogsController::class, 'showPage']);
+
 Route::get('blogs', [BlogsController::class, 'show']);
 
 Route::get('blogs/category/{category_id}', [BlogsController::class, 'showPublicCategory']);
@@ -47,3 +50,5 @@ Route::get('blogs/{id}', [BlogsController::class, 'showPublicBlog']);
 Route::post('like/{idBlog}', [LikeController::class, 'clickLike']);
 
 Route::resources(['comment' => CommentController::class]);
+
+Route::post('find_in_title', [FindController::class, 'findTitle']);

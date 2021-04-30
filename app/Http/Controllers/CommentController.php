@@ -39,7 +39,7 @@ class CommentController extends Controller
      */
     public function store(CommentRequest $request)
     {
-        $user_id = $this->getUserId();
+        $user_id = getUserId();
          
         $comment = $request->input('comment');
         $blog_id = $request->input('blog_id');
@@ -116,20 +116,5 @@ class CommentController extends Controller
             
             return response()->json(["message" => "Comment with id {$commentId} deleted"]);
         }
-    }
-
-    /**
-     * Return user id for this Blog or Abort app.
-     *
-     * 
-     * @return user_id or Abort app;
-     */
-    public function getUserId()
-    {
-        $user = auth()->user();
-        if (is_null($user)) {
-            abort_if(true, 401, "You are not logged in");
-        }
-        return $user->id;
     }
 }
